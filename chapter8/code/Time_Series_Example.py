@@ -57,7 +57,7 @@ class TimeSeriesExample:
           plot.show(block=False)
           print("Dickey fuller test - output")
           adft = adfuller(training_data,autolag='AIC')
-          output = pd.Series(adft[0:4],index=['Test Statistics','p-value','No. of lags used','Number of observations used'])
+          output = pand.Series(adft[0:4],index=['Test Statistics','p-value','No. of lags used','Number of observations used'])
           for key,values in adft[4].items():
               output['critical value (%s)'%key] =  values
           print(output)
@@ -77,6 +77,8 @@ def main():
     
     history = training_data.history()
     stock_df_close = history["close"]
+    if isinstance(stock_df_close.index, pand.MultiIndex):
+        stock_df_close = stock_df_close.droplevel(0)
     stock_df_close.plot(kind='kde')
 
     priceIndicator.check_stationarity(stock_df_close)
@@ -103,8 +105,8 @@ def main():
                           error_action='ignore',  
                           suppress_warnings=True, 
                           stepwise=True)
-    print(model_autoARIMA.summary())
-    model_autoARIMA.plot_diagnostics(figsize=(15,8))
+    print(stock_model_autoARIMA.summary())
+    stock_model_autoARIMA.plot_diagnostics(figsize=(15,8))
     
     stock_model = ARIMA(stock_train_data, order=(1,1,2))  
     stock_fitted = stock_model.fit(disp=-1)  
@@ -114,7 +116,7 @@ def main():
     stock_fc, stock_se, stock_conf = stock_fitted.forecast(321, alpha=0.05) 
     stock_fc_series = pand.Series(stock_fc, index=stock_test_data.index)
     stock_lower_series = pand.Series(stock_conf[:, 0], index=stock_test_data.index)
-    stock_upper_series = pand.Series(cstock_onf[:, 1], index=stock_test_data.index)
+    stock_upper_series = pand.Series(stock_conf[:, 1], index=stock_test_data.index)
     
 
     stock_mse = mean_squared_error(stock_test_data, stock_fc)

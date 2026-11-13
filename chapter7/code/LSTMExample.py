@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plot
 import numpy as nump
 import pandas as pand
-import fix_yahoo_finance as yahf
+import yfinance as yahf
 import datetime
 import logging
 from ta.utils import dropna
@@ -13,51 +13,51 @@ from keras.layers import Dense
 from keras.layers import Dropout
 
 
-from keras.wrappers.scikit_learn import KerasRegressor
+from keras.wrappers import SKLearnRegressor as KerasRegressor
 from sklearn.model_selection import RandomizedSearchCV
 
 class LSTMExample:
-  
+
       def __init__(self):
-  	      self.name = "LSTMExample"
-  	      self.data = None
-  	      self.dataset_index = 0
-          
+          self.name = "LSTMExample"
+          self.data = None
+          self.dataset_index = 0
+
       def getStockPrices(self,stockSymbol,range_start,range_end):
-    
+
           print("getting stock price")
-          stock_data=yahf.download(stockSymbol,start=range_start,end=range_end)
-      
-      
+          stock_data=yahf.download(stockSymbol,start=range_start,end=range_end,multi_level_index=False)
+
+
           print("data",stock_data.columns)
-      
+
           return stock_data
-       
+
       def getmodel_regressionModel(self,optimizer):
-    	      model_regression= Sequential()
+              model_regression= Sequential()
 
 
-    	      model_regression.add(LSTM(units=50,return_sequences=True,kernel_initializer='glorot_uniform',input_shape=(xtrain.shape[1],1)))
-    	      model_regression.add(Dropout(0.2))
+              model_regression.add(LSTM(units=50,return_sequences=True,kernel_initializer='glorot_uniform',input_shape=(xtrain.shape[1],1)))
+              model_regression.add(Dropout(0.2))
 
 
-    	      model_regression.add(LSTM(units=50,kernel_initializer= 'glorot_uniform',return_sequences=True))
-    	      model_regression.add(Dropout(0.2))
+              model_regression.add(LSTM(units=50,kernel_initializer= 'glorot_uniform',return_sequences=True))
+              model_regression.add(Dropout(0.2))
 
 
-    	      model_regression.add(LSTM(units=50,kernel_initializer='glorot_uniform',return_sequences=True))
-    	      model_regression.add(Dropout(0.2))
+              model_regression.add(LSTM(units=50,kernel_initializer='glorot_uniform',return_sequences=True))
+              model_regression.add(Dropout(0.2))
 
 
-    	      model_regression.add(LSTM(units=50,kernel_initializer='glorot_uniform'))
-    	      model_regression.add(Dropout(0.2))
+              model_regression.add(LSTM(units=50,kernel_initializer='glorot_uniform'))
+              model_regression.add(Dropout(0.2))
 
-    	      model_regression.add(Dense(units=1))
+              model_regression.add(Dense(units=1))
 
-    	      model_regression.compile(optimizer=optimizer,loss='mean_squared_error')
+              model_regression.compile(optimizer=optimizer,loss='mean_squared_error')
 
-    	      return model_regression
-     
+              return model_regression
+
       def analyzeLSTM(self,training_data,testing_data):
 
             print("training data",training_data.head())
@@ -99,7 +99,7 @@ class LSTMExample:
             market_xtest= nump.reshape(market_xtest,(market_xtest.shape[0],market_xtest.shape[1],1))
             market_predicted_value= model_regression.predict(market_xtest)
             market_predicted_value= ss.inverse_transform(market_predicted_value)
-            
+
             return market_test_open, market_predicted_value
 
 
@@ -113,17 +113,17 @@ class LSTMExample:
           plot.title('Real vs Predicted Prices')
           plot.legend(loc='best', fontsize=20)
           plot.show()
-          
 
 
 
-	      
-		  
+
+
+
 def main():
     logging.basicConfig(format="%(levelname)s - %(name)s -  %(message)s", level=logging.INFO)
     logging.getLogger("finance").setLevel(logging.INFO)
     priceIndicator = LSTMExample()
-    
+
     start_date = datetime.date(2021,6,21)
     end_date = datetime.date(2022,12,25)
     stock_symbol = "MSFT"
@@ -133,15 +133,15 @@ def main():
 
     start_date = datetime.date(2023,1,21)
     end_date = datetime.date(2023,9,25)
-    
+
     test_data = priceIndicator.getStockPrices(stock_symbol,start_date,end_date)
-    
+
     print("stock test data",test_data)
-    
+
     market_open, market_prediction = priceIndicator.analyzeLSTM(training_data,test_data)
-    
+
     priceIndicator.plotPrices(market_open,market_prediction)
-    
+
 
 
 if __name__ == '__main__':

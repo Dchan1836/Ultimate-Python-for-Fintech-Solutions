@@ -2,6 +2,18 @@
 
 This is the repository for [Ultimate Python for Fintech Solutions](https://orangeava.com/products/ultimate-python-for-fintech-solutions), published by Orange AVA™
 
+## Run Finntech Lab
+
+From `FinntechApp`, start the API and the UI:
+
+& 'c:\Users\socce\workspace\pythonForFinnTechBook\Ultimate-Python-for-Fintech-Solutions\FinntechApp\dev.ps1'
+
+```powershell
+.\dev.ps1
+```
+
+The UI is at http://localhost:5173 and the API is at http://127.0.0.1:8000.
+
 ## About the Book
 Dive into the dynamic world where finance meets fintech with Python's versatile capabilities in this 'Ultimate Python for Fintech Solutions'. Whether you're aiming to build secure trading platforms, conduct deep statistical analysis, or pioneer next-generation financial technologies, this book quips you with the knowledge, tools, and practical insights to succeed.
 

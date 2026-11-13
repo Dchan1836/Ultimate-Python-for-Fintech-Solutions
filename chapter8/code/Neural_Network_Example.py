@@ -11,7 +11,7 @@ from yahooquery import Ticker
 
 
 
-from keras.src.preprocessing.sequence import TimeseriesGenerator
+from keras.src.legacy.preprocessing.sequence import TimeseriesGenerator
 from keras import Sequential,layers
 
 

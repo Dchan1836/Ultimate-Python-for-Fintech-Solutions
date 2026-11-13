@@ -24,7 +24,7 @@ class SupervisedLearningExample:
       def getStockPrices(self,stockSymbol,range_start,range_end):
     
           print("getting stock price")
-          stock_data=yahf.download(stockSymbol,start=range_start,end=range_end)
+          stock_data=yahf.download(stockSymbol,start=range_start,end=range_end,auto_adjust=False,multi_level_index=False)
       
       
           print("data",stock_data.columns)
